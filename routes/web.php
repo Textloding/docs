@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+Route::get('/', [DocumentController::class, 'index'])->name('documents.index');
+Route::get('/documents/{slug}/{version?}', [DocumentController::class, 'show'])->name('documents.show');
+Route::post('/documents/{slug}/check-password', [DocumentController::class, 'checkPassword'])->name('documents.check-password');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Dcat\Admin\Traits\HasDateTimeFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Document extends Model
 {
@@ -56,6 +57,33 @@ class Document extends Model
     public function scopeRequiresPassword($query)
     {
         return $query->where('requires_password', true);
+    }
+
+    // 统计文章数
+    public function getArticleCountAttribute()
+    {
+        return $this->versions->sum(function ($version) {
+            return $version->articles()->count();
+        });
+    }
+
+    // 统计字数
+    public function getWordCountAttribute()
+    {
+        return $this->versions->sum(function ($version) {
+            return $version->articles->sum(function ($article) {
+                return mb_strlen(strip_tags($article->content));
+            });
+        });
+    }
+
+    // 定义访问器来生成完整的图片 URL
+    public function getCoverImageUrlAttribute()
+    {
+        if ($this->cover_image) {
+            return Storage::disk(config('admin.upload.disk'))->url($this->cover_image);
+        }
+        return null;
     }
 }
 

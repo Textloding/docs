@@ -48,6 +48,7 @@ class ArticleController extends AdminController
                 });
             }
 
+            $grid->column('slug','跳转链接');
             $grid->column('title');
             $grid->column('order');
             $grid->column('created_at')->sortable();
@@ -111,6 +112,7 @@ class ArticleController extends AdminController
             }
 
             $form->hidden('id');
+            $form->text('slug','跳转链接')->required();
             $form->text('title');
             $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'));
 
