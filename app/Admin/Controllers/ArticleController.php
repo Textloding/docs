@@ -112,7 +112,8 @@ class ArticleController extends AdminController
 
             $form->hidden('id');
             $form->text('title');
-            $form->text('content');
+            $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'));
+
             $document = \App\Models\Document::find($documentId);
 
             if ($document && $document->auto_numbering) {

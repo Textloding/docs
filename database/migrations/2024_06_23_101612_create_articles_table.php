@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('document_id')->constrained()->onDelete('cascade')->comment('关联文档ID');
             $table->foreignId('chapter_id')->nullable()->constrained()->onDelete('cascade')->comment('关联章节ID');
             $table->string('title')->comment('文章标题');
-            $table->text('content')->comment('文章内容');
+            $table->longText('content')->comment('文章内容');
             $table->integer('order')->default(0)->comment('文章排序');
             $table->timestamps();
         });
