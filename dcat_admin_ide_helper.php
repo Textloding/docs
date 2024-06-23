@@ -11,6 +11,7 @@ namespace Dcat\Admin {
     use Illuminate\Support\Collection;
 
     /**
+     * @property Grid\Column|Collection order
      * @property Grid\Column|Collection created_at
      * @property Grid\Column|Collection detail
      * @property Grid\Column|Collection id
@@ -21,7 +22,6 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection is_enabled
      * @property Grid\Column|Collection extension
      * @property Grid\Column|Collection icon
-     * @property Grid\Column|Collection order
      * @property Grid\Column|Collection parent_id
      * @property Grid\Column|Collection uri
      * @property Grid\Column|Collection menu_id
@@ -39,6 +39,7 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection chapter_id
      * @property Grid\Column|Collection content
      * @property Grid\Column|Collection document_id
+     * @property Grid\Column|Collection version_id
      * @property Grid\Column|Collection auto_numbering
      * @property Grid\Column|Collection cover_image
      * @property Grid\Column|Collection has_chapters
@@ -60,6 +61,7 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection email_verified_at
      * @property Grid\Column|Collection version_number
      *
+     * @method Grid\Column|Collection order(string $label = null)
      * @method Grid\Column|Collection created_at(string $label = null)
      * @method Grid\Column|Collection detail(string $label = null)
      * @method Grid\Column|Collection id(string $label = null)
@@ -70,7 +72,6 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection is_enabled(string $label = null)
      * @method Grid\Column|Collection extension(string $label = null)
      * @method Grid\Column|Collection icon(string $label = null)
-     * @method Grid\Column|Collection order(string $label = null)
      * @method Grid\Column|Collection parent_id(string $label = null)
      * @method Grid\Column|Collection uri(string $label = null)
      * @method Grid\Column|Collection menu_id(string $label = null)
@@ -88,6 +89,7 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection chapter_id(string $label = null)
      * @method Grid\Column|Collection content(string $label = null)
      * @method Grid\Column|Collection document_id(string $label = null)
+     * @method Grid\Column|Collection version_id(string $label = null)
      * @method Grid\Column|Collection auto_numbering(string $label = null)
      * @method Grid\Column|Collection cover_image(string $label = null)
      * @method Grid\Column|Collection has_chapters(string $label = null)
@@ -114,6 +116,7 @@ namespace Dcat\Admin {
     class MiniGrid extends Grid {}
 
     /**
+     * @property Show\Field|Collection order
      * @property Show\Field|Collection created_at
      * @property Show\Field|Collection detail
      * @property Show\Field|Collection id
@@ -124,7 +127,6 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection is_enabled
      * @property Show\Field|Collection extension
      * @property Show\Field|Collection icon
-     * @property Show\Field|Collection order
      * @property Show\Field|Collection parent_id
      * @property Show\Field|Collection uri
      * @property Show\Field|Collection menu_id
@@ -142,6 +144,7 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection chapter_id
      * @property Show\Field|Collection content
      * @property Show\Field|Collection document_id
+     * @property Show\Field|Collection version_id
      * @property Show\Field|Collection auto_numbering
      * @property Show\Field|Collection cover_image
      * @property Show\Field|Collection has_chapters
@@ -163,6 +166,7 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection email_verified_at
      * @property Show\Field|Collection version_number
      *
+     * @method Show\Field|Collection order(string $label = null)
      * @method Show\Field|Collection created_at(string $label = null)
      * @method Show\Field|Collection detail(string $label = null)
      * @method Show\Field|Collection id(string $label = null)
@@ -173,7 +177,6 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection is_enabled(string $label = null)
      * @method Show\Field|Collection extension(string $label = null)
      * @method Show\Field|Collection icon(string $label = null)
-     * @method Show\Field|Collection order(string $label = null)
      * @method Show\Field|Collection parent_id(string $label = null)
      * @method Show\Field|Collection uri(string $label = null)
      * @method Show\Field|Collection menu_id(string $label = null)
@@ -191,6 +194,7 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection chapter_id(string $label = null)
      * @method Show\Field|Collection content(string $label = null)
      * @method Show\Field|Collection document_id(string $label = null)
+     * @method Show\Field|Collection version_id(string $label = null)
      * @method Show\Field|Collection auto_numbering(string $label = null)
      * @method Show\Field|Collection cover_image(string $label = null)
      * @method Show\Field|Collection has_chapters(string $label = null)

@@ -20,8 +20,11 @@ class DocumentController extends AdminController
         return Grid::make(new Document(), function (Grid $grid) {
             $grid->column('id')->sortable();
             $grid->column('name');
-            $grid->column('slug');
-            $grid->column('description');
+            // 添加自定义版本管理按钮
+            $grid->column('version_management', '下级管理')->display(function () {
+                $url = admin_url('versions?document_id=' . $this->id);
+                return "<a href='{$url}' class='btn btn-sm btn-primary'>版本管理</a>";
+            });
             $grid->column('cover_image')->image('',100,100);
             $grid->column('has_chapters','区分章节')->switch('red', true);
             $grid->column('auto_numbering','自动编号')->switch('green', true);
@@ -30,6 +33,7 @@ class DocumentController extends AdminController
             $grid->column('password');
             $grid->column('created_at')->sortable();
 
+            $grid->disableViewButton();
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
 

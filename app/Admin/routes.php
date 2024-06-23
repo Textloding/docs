@@ -15,6 +15,9 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resources([
         '/documents' => 'DocumentController',
+        '/versions' => 'VersionController',
+        '/chapters' => 'ChapterController',
+        '/articles' => 'ArticleController',
     ]);
 
 });
