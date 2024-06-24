@@ -84,12 +84,34 @@
         .icon {
             margin-right: 5px;
         }
+        .articles-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-link {
+            padding: 5px 10px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .article-link:hover {
+            background-color: #e2e2e2;
+            color: #000;
+        }
+
         .chapter {
             margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffff;
             border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         .chapter-title {
             font-weight: bold;
@@ -137,22 +159,27 @@
         @if($document->has_chapters)
             @foreach($version->chapters as $chapter)
                 <div class="chapter">
-                    <div class="chapter-title">第{{ $chapter->order }}章. {{ $chapter->title }}</div>
-                    @if(isset($articles[$chapter->id]) && $articles[$chapter->id]->isNotEmpty())
-                        @foreach($articles[$chapter->id] as $article)
-                            <div class="article-title">{{ $chapter->order }}.{{ $article->order }}. {{ $article->title }}</div>
-                        @endforeach
-                    @else
-                        <div class="article-title">暂无文章</div>
-                    @endif
+                    <div class="chapter-title">第{{ $chapter->order }}章: {{ $chapter->title }}</div>
+                    <div class="articles-list">
+                        @if(isset($articles[$chapter->id]) && $articles[$chapter->id]->isNotEmpty())
+                            @foreach($articles[$chapter->id] as $article)
+                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug]) }}" class="article-link">{{ $chapter->order }}.{{ $article->order }} {{ $article->title }}</a>
+                            @endforeach
+                        @else
+                            <div class="article-title">暂无文章</div>
+                        @endif
+                    </div>
                 </div>
             @endforeach
         @else
-            @foreach($articles as $article)
-                <div class="article-title">{{ $article->order }}. {{ $article->title }}</div>
-            @endforeach
+            <div class="articles-list">
+                @foreach($articles as $article)
+                    <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug]) }}" class="article-link">{{ $article->order }} {{ $article->title }}</a>
+                @endforeach
+            </div>
         @endif
     </div>
+
 </div>
 
 <script>
