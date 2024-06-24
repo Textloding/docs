@@ -209,7 +209,7 @@
                 </a>
                 <div class="divider"></div>
                 <div class="document-card-body">
-                    <h5>{{ $document->name }}</h5>
+                    <h8>{{ $document->name }}</h8>
                     <div class="divider-light"></div>
                     @if($document->versions->isNotEmpty())
                         <p><strong>最新版本:</strong> {{ $latestVersion->version_number }}</p>
