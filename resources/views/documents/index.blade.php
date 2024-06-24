@@ -29,7 +29,7 @@
             display: inline-block;
             vertical-align: top;
             box-sizing: border-box;
-            padding: 10px; /* 添加边距 */
+            padding: 10px;
             background-color: #fff;
         }
         .document-card:hover {
@@ -40,13 +40,13 @@
             height: 197.594px;
             object-fit: cover;
             display: block;
-            margin: 0 auto; /* 居中图片 */
+            margin: 0 auto;
         }
         .document-card-body {
             width: 189.594px;
             height: 147.984px;
             padding: 10px;
-            margin: 0 auto; /* 居中信息块 */
+            margin: 0 auto;
             box-sizing: border-box;
             text-align: center;
         }
@@ -159,6 +159,22 @@
             background-color: #333;
             border-color: #555;
         }
+        .secret-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            /*opacity: 0;*/
+        }
+        .toggle-visibility-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            display: none;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -210,6 +226,10 @@
         {{ $documents->links() }}
     </div>
 </div>
+<button class="secret-btn" onclick="location.href='{{ route('password.verify', ['slug' => 'admin']) }}'">🔒</button>
+<button class="btn btn-secondary toggle-visibility-btn" onclick="location.href='{{ route('documents.index', ['is_public' => $isPublic ? 0 : 1]) }}'">
+    {{ $isPublic ? '显示私有文档' : '显示公共文档' }}
+</button>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -232,6 +252,20 @@
                 localStorage.removeItem("theme");
             }
         });
+
+        // 隐秘按钮的触发键盘组合
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.altKey && e.key === 'A') {
+                document.querySelector('.secret-btn').click();
+            }
+        });
+
+        // 显示切换私有/公有文档按钮
+        const toggleVisibilityBtn = document.querySelector('.toggle-visibility-btn');
+        const isAuthenticated = '{{ session("admin_authenticated") }}';
+        if (isAuthenticated) {
+            toggleVisibilityBtn.style.display = 'block';
+        }
     });
 </script>
 </body>

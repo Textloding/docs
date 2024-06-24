@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>访问密码</title>
+    <title>验证密码</title>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <style>
         body {
@@ -93,11 +93,11 @@
 </head>
 <body>
 <div class="container">
-    <h1>{{ $document->name }} - 访问密码</h1>
-    <form action="{{ route('documents.check-password', ['slug' => $document->slug]) }}" method="POST">
+    <h1>{{ $document->name }} - 验证密码</h1>
+    <form action="{{ $formAction }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="password" class="form-label">请输入访问密码：</label>
+            <label for="password" class="form-label">请输入密码：</label>
             <input type="password" name="password" id="password" class="form-control" required>
         </div>
         @if($errors->any())
