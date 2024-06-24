@@ -21,7 +21,7 @@ class Article extends Model implements Sortable
     ];
     protected $sortable = [
         'order_column_name' => 'order',
-        'sort_when_creating' => true,
+        'sort_when_creating' => false,
     ];
 
     // 文章与章节的关系

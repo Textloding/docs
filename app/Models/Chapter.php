@@ -20,7 +20,7 @@ class Chapter extends Model implements Sortable
     ];
     protected $sortable = [
         'order_column_name' => 'order',
-        'sort_when_creating' => true,
+        'sort_when_creating' => false,
     ];
 
     // 章节与文档的关系
