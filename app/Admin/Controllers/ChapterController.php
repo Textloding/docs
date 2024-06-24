@@ -44,6 +44,7 @@ class ChapterController extends AdminController
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
             $grid->disableViewButton();
+            $grid->disableCreateButton();
 
             $grid->tools(function (Grid\Tools $tools) use ($documentId, $versionId) {
                 $tools->append("<a class='btn btn-primary' href='" . admin_url("versions?document_id={$documentId}") . "'>返回版本管理</a>");
@@ -107,6 +108,7 @@ class ChapterController extends AdminController
 
             $form->display('created_at');
             $form->display('updated_at');
+            $form->disableListButton();
         });
     }
 
