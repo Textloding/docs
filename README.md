@@ -54,26 +54,37 @@ php artisan export:documents-seed
 
 ## 前台展示
 [![pkyKQWq.md.png](https://s21.ax1x.com/2024/06/26/pkyKQWq.md.png)](https://imgse.com/i/pkyKQWq)
+
 暗夜模式(目前只主页更改)
 [![pkyKNTJ.md.png](https://s21.ax1x.com/2024/06/26/pkyKNTJ.md.png)](https://imgse.com/i/pkyKNTJ)
+
 验证密码页
 [![pkyKr6K.md.png](https://s21.ax1x.com/2024/06/26/pkyKr6K.md.png)](https://imgse.com/i/pkyKr6K)
+
 文档展示页
 [![pkyK51P.md.png](https://s21.ax1x.com/2024/06/26/pkyK51P.md.png)](https://imgse.com/i/pkyK51P)
+
 文章详情页
 [![pkyKLkj.md.png](https://s21.ax1x.com/2024/06/26/pkyKLkj.md.png)](https://imgse.com/i/pkyKLkj)
 
+
 ## 后台展示
+
 文档管理
 [![pkyKvpq.md.png](https://s21.ax1x.com/2024/06/26/pkyKvpq.md.png)](https://imgse.com/i/pkyKvpq)
+
 版本管理(公开开关暂不可用)
 [![pkyM9nU.md.png](https://s21.ax1x.com/2024/06/26/pkyM9nU.md.png)](https://imgse.com/i/pkyM9nU)
+
 章节管理
 [![pkyMG9I.md.png](https://s21.ax1x.com/2024/06/26/pkyMG9I.md.png)](https://imgse.com/i/pkyMG9I)
+
 文章管理
 [![pkyMG9I.md.png](http://laravel.oneself.icu/1719393031852.png)](http://laravel.oneself.icu/1719393031852.png)
+
 文章编辑
 [![pkyMG9I.md.png](http://laravel.oneself.icu/1719393603061.png)](http://laravel.oneself.icu/1719393603061.png)
+
 
 ## 待解决已知问题
 1.BUG问题
