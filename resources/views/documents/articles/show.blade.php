@@ -181,7 +181,7 @@
                     @else
                         @foreach($chapterArticles as $articleItem)
                             <div class="article-title">
-                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug]) }}">{{ $articleItem->order }}. {{ $articleItem->title }}</a>
+                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug, 'article_id' => $articleItem->id]) }}">{{ $articleItem->order }}. {{ $articleItem->title }}</a>
                             </div>
                         @endforeach
                     @endif
@@ -206,7 +206,7 @@
             <div class="version-selector">
                 <select onchange="location = this.value;">
                     @foreach($document->versions as $ver)
-                        <option value="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $ver->version_number, 'article_slug' => $article->slug]) }}" {{ $ver->version_number == $version->version_number ? 'selected' : '' }}>
+                        <option value="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $ver->version_number, 'article_slug' => $article->slug, 'article_id' => $articleItem->id]) }}" {{ $ver->version_number == $version->version_number ? 'selected' : '' }}>
                             {{ $ver->version_number }}
                         </option>
                     @endforeach
@@ -296,33 +296,41 @@
             }
         }
 
-        // 获取当前文章的索引
+          // 获取当前文章的索引
         function getCurrentArticleIndex() {
-            var currentUrl = window.location.href;
+            var currentArticleId = {{ $article->id }};
             var articles = @json($articles);
-            for (var i = 0; i < articles.length; i++) {
-                if (currentUrl.includes(articles[i].slug)) {
-                    return i;
+
+            for (var chapterId in articles) {
+                if (articles.hasOwnProperty(chapterId)) {
+                    var chapterArticles = articles[chapterId];
+                    for (var i = 0; i < chapterArticles.length; i++) {
+                        if (chapterArticles[i].id == currentArticleId) {
+                            return { chapterId: chapterId, articleIndex: i };
+                        }
+                    }
                 }
             }
-            return -1;
+            return null;
         }
 
         // 获取指定索引的文章URL
-        function getArticleUrlByIndex(index) {
+        function getArticleUrlByIndex(baseUrl, documentName, version, chapterId, articleIndex) {
             var articles = @json($articles);
-            if (index >= 0 && index < articles.length) {
-                var article = articles[index];
-                return '{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => 'ARTICLE_SLUG']) }}'.replace('ARTICLE_SLUG', article.slug);
+            var chapterArticles = articles[chapterId];
+
+            if (articleIndex >= 0 && articleIndex < chapterArticles.length) {
+                var article = chapterArticles[articleIndex];
+                return `${baseUrl}/documents/${documentName}/${version}/articles/${article.slug}/${article.id}`;
             }
             return null;
         }
 
         window.goToPreviousArticle = function() {
-            var currentArticleIndex = getCurrentArticleIndex();
-            if (currentArticleIndex > 0) {
-                var prevArticleIndex = currentArticleIndex - 1;
-                var prevUrl = getArticleUrlByIndex(prevArticleIndex);
+            var currentArticleInfo = getCurrentArticleIndex();
+            if (currentArticleInfo && currentArticleInfo.articleIndex > 0) {
+                var prevArticleIndex = currentArticleInfo.articleIndex - 1;
+                var prevUrl = getArticleUrlByIndex('{{ url("/") }}', '{{ $document->slug }}', '{{ $version->version_number }}', currentArticleInfo.chapterId, prevArticleIndex);
                 if (prevUrl) {
                     location.href = prevUrl;
                 }
@@ -330,11 +338,13 @@
         }
 
         window.goToNextArticle = function() {
-            var currentArticleIndex = getCurrentArticleIndex();
-            var nextArticleIndex = currentArticleIndex + 1;
-            var nextUrl = getArticleUrlByIndex(nextArticleIndex);
-            if (nextUrl) {
-                location.href = nextUrl;
+            var currentArticleInfo = getCurrentArticleIndex();
+            if (currentArticleInfo) {
+                var nextArticleIndex = currentArticleInfo.articleIndex + 1;
+                var nextUrl = getArticleUrlByIndex('{{ url("/") }}', '{{ $document->slug }}', '{{ $version->version_number }}', currentArticleInfo.chapterId, nextArticleIndex);
+                if (nextUrl) {
+                    location.href = nextUrl;
+                }
             }
         }
 

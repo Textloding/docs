@@ -26,4 +26,5 @@ Route::post('/verify/admin/{slug}', [PasswordVerificationController::class, 'ver
 Route::post('/verify/document/{slug}', [PasswordVerificationController::class, 'verifyDocumentPassword'])->name('documents.check-password');
 
 Route::get('/documents/{slug}/{version?}', [DocumentController::class, 'show'])->name('documents.show');
-Route::get('/documents/{document_slug}/{version}/articles/{article_slug}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('/documents/{document_slug}/{version}/articles/{article_slug}/{article_id}', [ArticleController::class, 'show'])->name('articles.show');
+

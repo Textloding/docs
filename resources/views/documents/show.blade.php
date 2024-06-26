@@ -163,7 +163,7 @@
                     <div class="articles-list">
                         @if(isset($articles[$chapter->id]) && $articles[$chapter->id]->isNotEmpty())
                             @foreach($articles[$chapter->id] as $article)
-                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug]) }}" class="article-link">{{ $chapter->order }}.{{ $article->order }} {{ $article->title }}</a>
+                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug, 'article_id' => $article->id]) }}" class="article-link">{{ $chapter->order }}.{{ $article->order }} {{ $article->title }}</a>
                             @endforeach
                         @else
                             <div class="article-title">暂无文章</div>
@@ -174,7 +174,7 @@
         @else
             <div class="articles-list">
                 @foreach($articles as $article)
-                    <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug]) }}" class="article-link">{{ $article->order }} {{ $article->title }}</a>
+                    <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug, 'article_id' => $article->id]) }}" class="article-link">{{ $article->order }} {{ $article->title }}</a>
                 @endforeach
             </div>
         @endif

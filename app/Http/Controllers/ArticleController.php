@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function show(Request $request, $document_slug, $version_number, $article_slug)
+    public function show(Request $request, $document_slug, $version_number, $article_slug, $article_id)
     {
         $document = Document::where('slug', $document_slug)->firstOrFail();
 
@@ -30,6 +30,7 @@ class ArticleController extends Controller
             ->firstOrFail();
         $article = Article::where('slug', $article_slug)
             ->where('version_id', $version->id)
+            ->where('id', $article_id)
             ->firstOrFail();
 
         $articles = $document->has_chapters
