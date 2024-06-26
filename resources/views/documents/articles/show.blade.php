@@ -120,13 +120,19 @@
         .collapse.show .toggle-icon {
             transform: rotate(90deg);
         }
-        .chapter-title, .article-title a {
+        .chapter-title  {
             font-weight: bold;
-            color: #17a2b8;
+            color: #138496;
             text-decoration: none;
         }
+        .article-title a {
+            font-weight: bold;
+            color: #d9d9d9;
+            text-decoration: none;
+        }
+
         .chapter-title:hover, .article-title a:hover {
-            color: #138496;
+            color: #FF7F50;
         }
         .article-meta {
             margin-bottom: 20px;
