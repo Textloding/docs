@@ -1,36 +1,47 @@
 <?php
 
-if (!function_exists('numberToChinese')) {
-    function numberToChinese($number)
-    {
-        $numbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
-        $units = ['', '十', '百', '千', '万', '十万', '百万', '千万', '亿'];
-        $chars = [];
-        $number = strval($number); // 确保 number 是字符串类型
-        $length = strlen($number);
-        $zeroFlag = false; // 标记是否连续零
+function numberToChinese($number) {
+    $digits = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+    $tens = ['', '十', '百', '千'];
+    $bigNumbers = ['', '万', '亿', '兆'];
 
-        for ($i = 0; $i < $length; $i++) {
-            $n = $number[$length - $i - 1];
-            if ($n == "0") {
-                if (!$zeroFlag) {
-                    $chars[] = $numbers[$n];
-                    $zeroFlag = true;
-                }
-            } else {
-                $zeroFlag = false;
-                $chars[] = $units[$i];
-                $chars[] = $numbers[$n];
-            }
-        }
-        $chars = array_reverse($chars);
-        $chars = implode('', $chars);
-        $chars = preg_replace('/零[十百千]/u', '零', $chars);
-        $chars = preg_replace('/零+/u', '零', $chars);
-        $chars = rtrim($chars, '零');
-        $chars = preg_replace('/零万/u', '万', $chars);
-        $chars = preg_replace('/零亿/u', '亿', $chars);
-        $chars = str_replace('一十', '十', $chars);
-        return $chars;
+    if ($number == 0) {
+        return '零';
     }
+
+    $negative = $number < 0 ? '负' : '';
+    $number = abs($number);
+
+    $parts = [];
+    $partIndex = 0;
+
+    while ($number > 0) {
+        $part = '';
+        $currentPart = $number % 10000;
+        $number = intdiv($number, 10000);
+
+        if ($currentPart > 0) {
+            $tempPart = '';
+            $digitIndex = 0;
+            while ($currentPart > 0) {
+                $digit = $currentPart % 10;
+                if ($digit > 0) {
+                    $tempPart = $digits[$digit] . ($digitIndex > 0 ? $tens[$digitIndex] : '') . $tempPart;
+                } else if (strlen($tempPart) > 0 && !str_ends_with($tempPart, '零')) {
+                    $tempPart = '零' . $tempPart;
+                }
+                $currentPart = intdiv($currentPart, 10);
+                $digitIndex++;
+            }
+            $part = $tempPart . $bigNumbers[$partIndex];
+        }
+        if ($part != '') {
+            array_unshift($parts, $part);
+        }
+        $partIndex++;
+    }
+
+    return $negative . implode('', $parts);
 }
+
+
