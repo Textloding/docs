@@ -181,7 +181,7 @@
                     @else
                         @foreach($chapterArticles as $articleItem)
                             <div class="article-title">
-                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug, 'article_id' => $articleItem->id]) }}">{{ $articleItem->order }}. {{ $articleItem->title }}</a>
+                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug, 'article_id' => $articleItem->id]) }}">{{ $articleItem->title }}</a>
                             </div>
                         @endforeach
                     @endif
