@@ -8,17 +8,28 @@ if (!function_exists('numberToChinese')) {
         $chars = [];
         $number = strval($number); // 确保 number 是字符串类型
         $length = strlen($number);
+        $zeroFlag = false; // 标记是否连续零
+
         for ($i = 0; $i < $length; $i++) {
             $n = $number[$length - $i - 1];
-            $chars[] = $units[$i];
-            $chars[] = $numbers[$n];
+            if ($n == "0") {
+                if (!$zeroFlag) {
+                    $chars[] = $numbers[$n];
+                    $zeroFlag = true;
+                }
+            } else {
+                $zeroFlag = false;
+                $chars[] = $units[$i];
+                $chars[] = $numbers[$n];
+            }
         }
         $chars = array_reverse($chars);
         $chars = implode('', $chars);
         $chars = preg_replace('/零[十百千]/u', '零', $chars);
         $chars = preg_replace('/零+/u', '零', $chars);
         $chars = rtrim($chars, '零');
-        $chars = preg_replace('/零$/u', '', $chars);
+        $chars = preg_replace('/零万/u', '万', $chars);
+        $chars = preg_replace('/零亿/u', '亿', $chars);
         $chars = str_replace('一十', '十', $chars);
         return $chars;
     }
