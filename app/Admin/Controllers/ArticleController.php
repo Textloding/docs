@@ -32,6 +32,7 @@ class ArticleController extends AdminController
                 $grid->model()->with('chapter');
             }
             $grid->model()->with(['document','version']);
+
             $grid->column('id')->sortable();
             $grid->column('document.name','文档名称');
             $grid->column('version.version_number','文档版本');

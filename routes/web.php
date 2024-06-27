@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+// 捕获所有未匹配的路由
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
 Route::get('/', [DocumentController::class, 'index'])->name('documents.index');
 
 Route::get('/verify/{slug}', [PasswordVerificationController::class, 'show'])->name('password.verify');
