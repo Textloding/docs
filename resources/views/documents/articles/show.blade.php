@@ -199,6 +199,45 @@
         .code-block:hover .copy-btn {
             display: block;
         }
+        
+       /* 容器样式，控制 select 的宽度和位置 */
+    .select-container {
+        width: 100px; /* 或根据需求调整宽度 */
+        position: relative;
+        display: inline-block; /* 使 select 不占满整行 */
+    }
+
+    /* 基础样式 */
+    select {
+        width: 100%;
+        height: 30px;
+        padding: 2px 30px 8px 35px; /* 增加右侧内边距以容纳箭头 */
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        appearance: none; /* 移除默认外观 */
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* 鼠标悬停和聚焦时的样式 */
+    select:hover,
+    select:focus {
+        border-color: #007bff;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 选项样式 */
+    option {
+        padding: 8px 10px;
+        background-color: white;
+        color: #333;
+    }
+
+
     </style>
 </head>
 <body>
@@ -242,7 +281,7 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="article-header">
-            <div>
+            <div class="select-container">
                 <select id="version-selector">
                     @foreach($document->versions as $ver)
                         <option value="{{ $ver->version_number }}" {{ $ver->version_number == $version->version_number ? 'selected' : '' }}>
@@ -350,6 +389,8 @@
                 }
             });
         }
+    
+
     });
     $(function() {
         editormd.markdownToHTML("article-content", {
