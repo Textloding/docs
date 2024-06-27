@@ -121,11 +121,13 @@
             transform: rotate(90deg);
         }
         .chapter-title  {
+
             font-weight: bold;
             color: #138496;
             text-decoration: none;
         }
         .article-title a {
+            padding-left: 25px;
             font-weight: bold;
             color: #d9d9d9;
             text-decoration: none;
