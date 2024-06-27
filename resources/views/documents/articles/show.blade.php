@@ -396,13 +396,19 @@
                 button.textContent = '复制';
 
                 button.addEventListener('click', function() {
-                    navigator.clipboard.writeText(codeBlock.textContent).then(function() {
-                        button.textContent = '已复制！';
+                    var textArea = document.createElement('textarea');
+                    textArea.value = codeBlock.textContent;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        var successful = document.execCommand('copy');
+                        button.textContent = successful ? '复制完成！' : '复制失败';
                         setTimeout(() => { button.textContent = '复制'; }, 2000);
-                    }, function(err) {
+                    } catch (err) {
                         button.textContent = '复制失败';
                         console.error('Error copying text: ', err);
-                    });
+                    }
+                    document.body.removeChild(textArea);
                 });
 
                 if (!pre.parentNode.classList.contains('code-block')) {
@@ -413,7 +419,8 @@
                 }
                 pre.appendChild(button);
             });
-        }
+}
+
 
 
 
