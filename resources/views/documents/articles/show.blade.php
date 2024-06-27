@@ -285,6 +285,39 @@
                 $('#version-selector').val(lastVersion); // 网络请求本身失败也恢复原来的选择
             });
         }
+        // 页面加载时，恢复每个章节的展开/折叠状态
+        $('.chapter').each(function() {
+            var chapterId = $(this).find('.chapter-title').attr('data-target');
+            var isExpanded = localStorage.getItem(chapterId) === 'true';
+            if (isExpanded) {
+                $(chapterId).addClass('show');
+                $(this).find('.toggle-icon').css('transform', 'rotate(90deg)');
+                $(chapterId).collapse('show'); // 确保Bootstrap的collapse状态更新
+            }
+        });
+
+        // 点击章节标题时，保存章节的展开/折叠状态
+        $('.chapter-title').on('click', function() {
+            var target = $(this).data('target');
+            $(target).collapse('toggle').on('shown.bs.collapse hidden.bs.collapse', function() {
+                var isExpanded = $(this).hasClass('show');
+                localStorage.setItem(target, isExpanded); // 更新localStorage状态
+                var icon = $(this).prev('.chapter-title').find('.toggle-icon');
+                icon.css('transform', isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'); // 更新图标状态
+            });
+        });
+        // 高亮当前查看的文章
+        highlightCurrentArticle();
+
+        function highlightCurrentArticle() {
+            var currentArticleId = '{{ $article->id }}'; // 当前文章ID
+            $('.article-title a').each(function() {
+                var href = $(this).attr('href');
+                if (href.includes(currentArticleId)) {
+                    $(this).css('color', '#FF7F50'); // 设置当前文章链接的颜色
+                }
+            });
+        }
     });
     $(function() {
         editormd.markdownToHTML("article-content", {
@@ -299,26 +332,7 @@
             path: '{{ asset('editormd/lib/') }}',
         });
 
-        // 初始化章节状态
-        $('.chapter').each(function() {
-            var chapterId = $(this).find('.chapter-title').data('target');
-            var isExpanded = localStorage.getItem(chapterId) === 'true';
-            if (isExpanded) {
-                $(chapterId).addClass('show');
-                $(this).find('.toggle-icon').css('transform', 'rotate(90deg)');
-            }
-        });
 
-        // 添加章节展开和折叠的点击事件处理器
-        $('.chapter-title').on('click', function() {
-            var target = $(this).data('target');
-            $(target).collapse('toggle');
-            var isExpanded = $(target).hasClass('show');
-            localStorage.setItem(target, isExpanded); // 存储状态
-
-            // 更新图标状态
-            $(this).find('.toggle-icon').css('transform', isExpanded ? 'rotate(0deg)' : 'rotate(90deg)');
-        });
 
         processImages();
         initLightbox();
