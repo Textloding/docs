@@ -313,7 +313,8 @@
             var currentArticleId = '{{ $article->id }}'; // 当前文章ID
             $('.article-title a').each(function() {
                 var href = $(this).attr('href');
-                if (href.includes(currentArticleId)) {
+                var hrefArticleId = href.split('/').pop(); // 假设URL结构最后一部分是文章ID
+                if (hrefArticleId === currentArticleId) {
                     $(this).css('color', '#FF7F50'); // 设置当前文章链接的颜色
                 }
             });
