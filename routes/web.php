@@ -32,3 +32,8 @@ Route::post('/verify/document/{slug}', [PasswordVerificationController::class, '
 Route::get('/documents/{slug}/{version?}', [DocumentController::class, 'show'])->name('documents.show');
 Route::get('/documents/{document_slug}/{version}/articles/{article_slug}/{article_id}', [ArticleController::class, 'show'])->name('articles.show');
 
+Route::get('/documents/{document_slug}/{version_number}/{chapter_id}/find-article/{article_slug}', [ArticleController::class, 'findArticleIdBySlug'])->name('articles.find_by_slug');
+Route::get('/documents/{document_slug}/{version_number}/find-article/{article_slug}', [ArticleController::class, 'findArticleIdBySlugNoChapter'])->name('articles.find_by_slug_no_chapter');
+
+
+

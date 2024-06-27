@@ -209,10 +209,10 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="article-header">
-            <div class="version-selector">
-                <select onchange="location = this.value;">
+            <div>
+                <select id="version-selector">
                     @foreach($document->versions as $ver)
-                        <option value="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $ver->version_number, 'article_slug' => $article->slug, 'article_id' => $articleItem->id]) }}" {{ $ver->version_number == $version->version_number ? 'selected' : '' }}>
+                        <option value="{{ $ver->version_number }}" {{ $ver->version_number == $version->version_number ? 'selected' : '' }}>
                             {{ $ver->version_number }}
                         </option>
                     @endforeach
@@ -247,6 +247,43 @@
 <script src="{{ asset('js/editormd.min.js') }}"></script>
 <script src="{{ asset('js/lightbox.min.js') }}"></script>
 <script>
+    $(document).ready(function() {
+        let lastVersion = $('#version-selector').val(); // 初始化时存储当前选中的版本号
+
+        $('#version-selector').on('focus', function () {
+            // 在下拉菜单获得焦点时记录当前的值
+            lastVersion = $(this).val();
+        }).change(function() {
+            const newVersion = $(this).val(); // 获取新选中的版本号
+            updateArticleLink(newVersion, lastVersion); // 调用函数，并传递当前选择和上次选择
+        });
+
+        function updateArticleLink(newVersion, lastVersion) {
+            const documentSlug = '{{ $document->slug }}';
+            const articleSlug = '{{ $article->slug }}';
+            const chapterId = '{{ $article->chapter_id }}';
+
+            // 检查 chapterId 是否存在，如果不存在或为空，则使用不同的 URL
+            const url = chapterId ?
+                `/documents/${documentSlug}/${newVersion}/${chapterId}/find-article/${articleSlug}` :
+                `/documents/${documentSlug}/${newVersion}/find-article/${articleSlug}`;
+
+            $.get(url, function(data) {
+                if (data.success) {
+                    const newLink = `/documents/${documentSlug}/${newVersion}/articles/${articleSlug}/${data.article_id}`;
+                    window.location.href = newLink;
+                    // 请求成功后更新 lastVersion
+                    $('#version-selector').data('last', newVersion);
+                } else {
+                    alert(data.message);
+                    $('#version-selector').val(lastVersion); // 请求失败时，恢复原来的选择
+                }
+            }).fail(function() {
+                alert('该版本对应文章没有找到！');
+                $('#version-selector').val(lastVersion); // 网络请求本身失败也恢复原来的选择
+            });
+        }
+    });
     $(function() {
         editormd.markdownToHTML("article-content", {
             htmlDecode: "style,script,iframe",
@@ -357,6 +394,7 @@
         window.scrollToTop = function() {
             $("html, body").animate({ scrollTop: 0 }, 500);
         }
+
     });
 </script>
 </body>

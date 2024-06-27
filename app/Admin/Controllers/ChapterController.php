@@ -31,7 +31,7 @@ class ChapterController extends AdminController
             $grid->column('id')->sortable();
             $grid->column('document.name','文档名称');
             $grid->column('version.version_number','文档版本');
-            $grid->column('title');
+            $grid->column('title')->help('如需切换版本，请保持各版本标题一致');
             $grid->column('order')->sortable()->orderable();
             // 添加自定义版本管理按钮
             $grid->column('article_management', '下级管理')->display(function () {
