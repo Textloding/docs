@@ -195,9 +195,11 @@
             </div>
         @endforeach
     @else
-        <div class="chapter">
-            <div class="chapter-title">暂无章节</div>
-        </div>
+        @foreach($articles as $articleItem)
+            <div class="article-title">
+                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug, 'article_id' => $articleItem->id]) }}">{{ $articleItem->title }}</a>
+            </div>
+        @endforeach
     @endif
 </div>
 
@@ -339,17 +341,27 @@
             }
         }
 
-          // 获取当前文章的索引
+        // 获取当前文章的索引
         function getCurrentArticleIndex() {
             var currentArticleId = {{ $article->id }};
             var articles = @json($articles);
 
-            for (var chapterId in articles) {
-                if (articles.hasOwnProperty(chapterId)) {
-                    var chapterArticles = articles[chapterId];
-                    for (var i = 0; i < chapterArticles.length; i++) {
-                        if (chapterArticles[i].id == currentArticleId) {
-                            return { chapterId: chapterId, articleIndex: i };
+            if (articles instanceof Array) {
+                // 处理没有章节的情况
+                for (var i = 0; i < articles.length; i++) {
+                    if (articles[i].id == currentArticleId) {
+                        return { chapterId: null, articleIndex: i };
+                    }
+                }
+            } else {
+                // 假设文章仍然按章节分组
+                for (var chapterId in articles) {
+                    if (articles.hasOwnProperty(chapterId)) {
+                        var chapterArticles = articles[chapterId];
+                        for (var i = 0; i < chapterArticles.length; i++) {
+                            if (chapterArticles[i].id == currentArticleId) {
+                                return { chapterId: chapterId, articleIndex: i };
+                            }
                         }
                     }
                 }
@@ -357,14 +369,22 @@
             return null;
         }
 
-        // 获取指定索引的文章URL
+// 获取指定索引的文章URL
         function getArticleUrlByIndex(baseUrl, documentName, version, chapterId, articleIndex) {
             var articles = @json($articles);
-            var chapterArticles = articles[chapterId];
 
-            if (articleIndex >= 0 && articleIndex < chapterArticles.length) {
-                var article = chapterArticles[articleIndex];
-                return `${baseUrl}/documents/${documentName}/${version}/articles/${article.slug}/${article.id}`;
+            if (chapterId === null) {
+                // 处理没有章节的情况
+                if (articleIndex >= 0 && articleIndex < articles.length) {
+                    var article = articles[articleIndex];
+                    return `${baseUrl}/documents/${documentName}/${version}/articles/${article.slug}/${article.id}`;
+                }
+            } else {
+                var chapterArticles = articles[chapterId];
+                if (articleIndex >= 0 && articleIndex < chapterArticles.length) {
+                    var article = chapterArticles[articleIndex];
+                    return `${baseUrl}/documents/${documentName}/${version}/articles/${article.slug}/${article.id}`;
+                }
             }
             return null;
         }
@@ -390,6 +410,7 @@
                 }
             }
         }
+
 
         window.scrollToTop = function() {
             $("html, body").animate({ scrollTop: 0 }, 500);
