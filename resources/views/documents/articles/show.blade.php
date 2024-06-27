@@ -170,6 +170,35 @@
             height: auto;
             cursor: pointer;
         }
+
+        .copy-btn {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            display: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            color: white;
+            background-color: #17a2b8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #138496;
+            opacity: 1;
+        }
+
+        .code-block {
+            position: relative;
+        }
+
+        .code-block:hover .copy-btn {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -339,6 +368,7 @@
 
         processImages();
         initLightbox();
+        addCopyButtons();
 
         function processImages() {
             console.log("Processing images...");
@@ -357,6 +387,35 @@
                 lightbox.init();
             }
         }
+
+        function addCopyButtons() {
+            document.querySelectorAll('pre').forEach(function(pre) {
+                var codeBlock = pre.querySelector('code');
+                var button = document.createElement('button');
+                button.className = 'copy-btn';
+                button.textContent = '复制';
+
+                button.addEventListener('click', function() {
+                    navigator.clipboard.writeText(codeBlock.textContent).then(function() {
+                        button.textContent = '已复制！';
+                        setTimeout(() => { button.textContent = '复制'; }, 2000);
+                    }, function(err) {
+                        button.textContent = '复制失败';
+                        console.error('Error copying text: ', err);
+                    });
+                });
+
+                if (!pre.parentNode.classList.contains('code-block')) {
+                    var div = document.createElement('div');
+                    div.className = 'code-block';
+                    pre.parentNode.insertBefore(div, pre);
+                    div.appendChild(pre);
+                }
+                pre.appendChild(button);
+            });
+        }
+
+
 
         // 获取当前文章的索引
         function getCurrentArticleIndex() {
