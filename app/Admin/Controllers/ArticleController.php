@@ -7,6 +7,7 @@ use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
+use Dcat\Admin\Support\JavaScript;
 
 class ArticleController extends AdminController
 {
@@ -115,7 +116,52 @@ class ArticleController extends AdminController
             $form->hidden('id');
             $form->text('slug','跳转链接')->required();
             $form->text('title');
-            $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'))->required();
+            $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'))->required()->options([
+                'onload' => JavaScript::make(
+                    <<<JS
+function() {
+    var _this = this;
+    document.addEventListener('paste', function(event) {
+        var clipboardData = event.clipboardData;
+        var items, item, types;
+
+        if (clipboardData) {
+            items = clipboardData.items;
+            if (!items) {
+                return;
+            }
+            item = items[0];
+            types = clipboardData.types || [];
+
+            for (var i = 0; i < types.length; i++) {
+                if (types[i] === 'Files') {
+                    item = items[i];
+                    break;
+                }
+            }
+
+            if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+                var file = item.getAsFile();
+                var formData = new FormData();
+                formData.append('image', file);
+
+                $.ajax({
+                    url: '/admin/upload-image',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        _this.insertValue("![](" + response.url + ")");
+                    }
+                });
+            }
+        }
+    });
+}
+JS
+                ),
+            ]);
 
             $document = \App\Models\Document::find($documentId);
 
