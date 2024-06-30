@@ -497,14 +497,23 @@
 
         function addCopyButtons() {
             document.querySelectorAll('pre').forEach(function(pre) {
-                var codeBlock = pre.querySelector('code');
                 var button = document.createElement('button');
                 button.className = 'copy-btn';
                 button.textContent = '复制';
 
                 button.addEventListener('click', function() {
+                    var codeLines = pre.querySelectorAll('ol.linenums li');
                     var textArea = document.createElement('textarea');
-                    textArea.value = codeBlock.textContent;
+                    var codeText = '';
+
+                    codeLines.forEach(function(line) {
+                        var codeElement = line.querySelector('code');
+                        if (codeElement) {
+                            codeText += codeElement.innerText + '\n';
+                        }
+                    });
+
+                    textArea.value = codeText.trim();
                     document.body.appendChild(textArea);
                     textArea.select();
                     try {
@@ -526,7 +535,7 @@
                 pre.appendChild(button);
             });
         }
-
+        
         function getCurrentArticleIndex() {
             var currentArticleId = {{ $article->id }};
             var articles = @json($articles);
