@@ -157,19 +157,19 @@
     </div>
     <div class="articles">
         @if($document->has_chapters)
-            @foreach($version->chapters as $chapter)
-                <div class="chapter">
-                    <div class="chapter-title">第{{ $chapter->order }}章: {{ $chapter->title }}</div>
-                    <div class="articles-list">
-                        @if(isset($articles[$chapter->id]) && $articles[$chapter->id]->isNotEmpty())
-                            @foreach($articles[$chapter->id] as $article)
-                                <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug, 'article_id' => $article->id]) }}" class="article-link">{{ $chapter->order }}.{{ $article->order }} {{ $article->title }}</a>
-                            @endforeach
-                        @else
-                            <div class="article-title">暂无文章</div>
-                        @endif
-                    </div>
+            @foreach($chapters as $chapter)  <!-- 使用排序后的章节 -->
+            <div class="chapter">
+                <div class="chapter-title">第{{ $chapter->order }}章: {{ $chapter->title }}</div>
+                <div class="articles-list">
+                    @if(isset($articles[$chapter->id]) && $articles[$chapter->id]->isNotEmpty())
+                        @foreach($articles[$chapter->id] as $article)
+                            <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $article->slug, 'article_id' => $article->id]) }}" class="article-link">{{ $chapter->order }}.{{ $article->order }} {{ $article->title }}</a>
+                        @endforeach
+                    @else
+                        <div class="article-title">暂无文章</div>
+                    @endif
                 </div>
+            </div>
             @endforeach
         @else
             <div class="articles-list">

@@ -59,17 +59,21 @@ class DocumentController extends Controller
             $version = $document->versions()->where('version_number', $version)->firstOrFail();
         }
 
-        $articles = $document->has_chapters
-            ? $version->articles()->join('chapters', 'articles.chapter_id', '=', 'chapters.id')
+        if ($document->has_chapters) {
+            $chapters = $version->chapters()->orderBy('order')->get();
+            $articles = $version->articles()->join('chapters', 'articles.chapter_id', '=', 'chapters.id')
                 ->orderBy('chapters.order')
                 ->orderBy('articles.order')
                 ->select('articles.*')
                 ->with('chapter')
                 ->get()
-                ->groupBy('chapter_id')
-            : $version->articles()->orderBy('order')->get();
+                ->groupBy('chapter_id');
+        } else {
+            $chapters = collect([]);
+            $articles = $version->articles()->orderBy('order')->get();
+        }
 
-        return view('documents.show', compact('document', 'version', 'articles'));
+        return view('documents.show', compact('document', 'version', 'articles', 'chapters'));
     }
 
 }
