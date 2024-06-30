@@ -60,7 +60,13 @@ class DocumentController extends Controller
         }
 
         $articles = $document->has_chapters
-            ? $version->articles()->orderBy('chapter_id')->orderBy('order')->get()->groupBy('chapter_id')
+            ? $version->articles()->join('chapters', 'articles.chapter_id', '=', 'chapters.id')
+                ->orderBy('chapters.order')
+                ->orderBy('articles.order')
+                ->select('articles.*')
+                ->with('chapter')
+                ->get()
+                ->groupBy('chapter_id')
             : $version->articles()->orderBy('order')->get();
 
         return view('documents.show', compact('document', 'version', 'articles'));
