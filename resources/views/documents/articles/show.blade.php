@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="{{ asset('css/lightbox.min.css') }}">
     <style>
         body {
-            display: flex;
             font-family: 'Arial', sans-serif;
             background: #f4f4f9;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
         }
         .sidebar, .toc {
             height: 100vh;
@@ -34,7 +35,6 @@
             border-left: 1px solid #eeeeee;
         }
 
-        /* 新添加的 CSS */
         .markdown-toc-list {
             list-style: none;
             padding-left: 0;
@@ -90,16 +90,18 @@
             padding-left: 100px;
             border-left: 1px solid #138496;
         }
+
         .content-wrapper {
-            margin-left: 550px;
+            margin-left: 580px;
             padding: 20px;
             flex-grow: 1;
-            max-width: 1200px;
+            max-width: calc(100% - 600px);
         }
         .content {
             max-width: 800px;
             margin: 0 auto;
         }
+
         .chapter-title {
             cursor: pointer;
             position: relative;
@@ -120,8 +122,8 @@
         .collapse.show .toggle-icon {
             transform: rotate(90deg);
         }
-        .chapter-title  {
 
+        .chapter-title  {
             font-weight: bold;
             color: #138496;
             text-decoration: none;
@@ -136,14 +138,17 @@
         .chapter-title:hover, .article-title a:hover {
             color: #FF7F50;
         }
+
         .article-meta {
             margin-bottom: 20px;
             color: #6c757d;
         }
+
         .article-content {
             border-top: 1px solid #ddd;
             padding-top: 20px;
         }
+
         .nav-buttons {
             position: fixed;
             bottom: 20px;
@@ -151,7 +156,9 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            z-index: 1000;
         }
+
         .nav-buttons button {
             width: 150px;
             padding: 10px;
@@ -162,9 +169,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .nav-buttons button:hover {
             background-color: #138496;
         }
+
         img {
             max-width: 100%;
             height: auto;
@@ -199,45 +208,112 @@
         .code-block:hover .copy-btn {
             display: block;
         }
-        
-       /* 容器样式，控制 select 的宽度和位置 */
-    .select-container {
-        width: 100px; /* 或根据需求调整宽度 */
-        position: relative;
-        display: inline-block; /* 使 select 不占满整行 */
-    }
 
-    /* 基础样式 */
-    select {
-        width: 100%;
-        height: 30px;
-        padding: 2px 30px 8px 35px; /* 增加右侧内边距以容纳箭头 */
-        margin: 5px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        appearance: none; /* 移除默认外观 */
-        cursor: pointer;
-        outline: none;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
+        .select-container {
+            width: 100px;
+            position: relative;
+            display: inline-block;
+        }
 
-    /* 鼠标悬停和聚焦时的样式 */
-    select:hover,
-    select:focus {
-        border-color: #007bff;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    }
+        select {
+            width: 100%;
+            height: 30px;
+            padding: 2px 30px 8px 35px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    /* 选项样式 */
-    option {
-        padding: 8px 10px;
-        background-color: white;
-        color: #333;
-    }
+        select:hover, select:focus {
+            border-color: #007bff;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
 
+        option {
+            padding: 8px 10px;
+            background-color: white;
+            color: #333;
+        }
 
+        .content-wrapper {
+            margin-left: 580px;
+            padding: 20px;
+            flex-grow: 1;
+            max-width: calc(100% - 600px);
+            padding-bottom: 100px; /* 增加底部内边距，确保内容不被遮挡 */
+        }
+
+        @media (max-width: 1200px) {
+            .toc {
+                width: 250px;
+                left: 250px;
+            }
+            .content-wrapper {
+                margin-left: 500px;
+                max-width: calc(100% - 500px);
+                padding-bottom: 100px; /* 增加底部内边距 */
+            }
+        }
+
+        @media (max-width: 992px) {
+            .toc {
+                width: 200px;
+                left: 200px;
+            }
+            .content-wrapper {
+                margin-left: 420px;
+                max-width: calc(100% - 420px);
+                padding-bottom: 100px; /* 增加底部内边距 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .toc {
+                display: none;
+            }
+            .sidebar {
+                width: 200px;
+            }
+            .content-wrapper {
+                margin-left: 220px;
+                max-width: calc(100% - 220px);
+                padding-bottom: 100px; /* 增加底部内边距 */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+            }
+            .content-wrapper {
+                margin-left: 0;
+                padding: 10px;
+                max-width: 100%;
+                padding-bottom: 100px; /* 增加底部内边距 */
+            }
+            .nav-buttons {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                bottom: 10px;
+                right: 0;
+                left: 0;
+                padding: 0 10px;
+            }
+            .nav-buttons button {
+                width: 32%;
+                padding: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -248,7 +324,7 @@
         @foreach($articles as $chapterId => $chapterArticles)
             <div class="chapter">
                 <div class="chapter-title" data-toggle="collapse" data-target="#chapter-{{ $chapterId }}">
-                    <span class="toggle-icon">&#9656;</span> <!-- 图标 -->
+                    <span class="toggle-icon">&#9656;</span>
                     {{ $chapterArticles->first()->chapter->title ?? '未命名章节' }}
                 </div>
                 <div class="collapse" id="chapter-{{ $chapterId }}">
@@ -315,19 +391,18 @@
 <script src="{{ asset('js/sequence-diagram-min.js') }}"></script>
 <script src="{{ asset('js/flowchart.min.js') }}"></script>
 <script src="{{ asset('js/jquery.flowchart.min.js') }}"></script>
-<script src="{{ asset('js/marked.js') }}"></script> <!-- 加载特定版本的 marked.js -->
+<script src="{{ asset('js/marked.js') }}"></script>
 <script src="{{ asset('js/editormd.min.js') }}"></script>
 <script src="{{ asset('js/lightbox.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        let lastVersion = $('#version-selector').val(); // 初始化时存储当前选中的版本号
+        let lastVersion = $('#version-selector').val();
 
         $('#version-selector').on('focus', function () {
-            // 在下拉菜单获得焦点时记录当前的值
             lastVersion = $(this).val();
         }).change(function() {
-            const newVersion = $(this).val(); // 获取新选中的版本号
-            updateArticleLink(newVersion, lastVersion); // 调用函数，并传递当前选择和上次选择
+            const newVersion = $(this).val();
+            updateArticleLink(newVersion, lastVersion);
         });
 
         function updateArticleLink(newVersion, lastVersion) {
@@ -335,7 +410,6 @@
             const articleSlug = '{{ $article->slug }}';
             const chapterId = '{{ $article->chapter_id }}';
 
-            // 检查 chapterId 是否存在，如果不存在或为空，则使用不同的 URL
             const url = chapterId ?
                 `/documents/${documentSlug}/${newVersion}/${chapterId}/find-article/${articleSlug}` :
                 `/documents/${documentSlug}/${newVersion}/find-article/${articleSlug}`;
@@ -344,54 +418,51 @@
                 if (data.success) {
                     const newLink = `/documents/${documentSlug}/${newVersion}/articles/${articleSlug}/${data.article_id}`;
                     window.location.href = newLink;
-                    // 请求成功后更新 lastVersion
                     $('#version-selector').data('last', newVersion);
                 } else {
                     alert(data.message);
-                    $('#version-selector').val(lastVersion); // 请求失败时，恢复原来的选择
+                    $('#version-selector').val(lastVersion);
                 }
             }).fail(function() {
                 alert('该版本对应文章没有找到！');
-                $('#version-selector').val(lastVersion); // 网络请求本身失败也恢复原来的选择
+                $('#version-selector').val(lastVersion);
             });
         }
-        // 页面加载时，恢复每个章节的展开/折叠状态
+
         $('.chapter').each(function() {
             var chapterId = $(this).find('.chapter-title').attr('data-target');
             var isExpanded = localStorage.getItem(chapterId) === 'true';
             if (isExpanded) {
                 $(chapterId).addClass('show');
                 $(this).find('.toggle-icon').css('transform', 'rotate(90deg)');
-                $(chapterId).collapse('show'); // 确保Bootstrap的collapse状态更新
+                $(chapterId).collapse('show');
             }
         });
 
-        // 点击章节标题时，保存章节的展开/折叠状态
         $('.chapter-title').on('click', function() {
             var target = $(this).data('target');
             $(target).collapse('toggle').on('shown.bs.collapse hidden.bs.collapse', function() {
                 var isExpanded = $(this).hasClass('show');
-                localStorage.setItem(target, isExpanded); // 更新localStorage状态
+                localStorage.setItem(target, isExpanded);
                 var icon = $(this).prev('.chapter-title').find('.toggle-icon');
-                icon.css('transform', isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'); // 更新图标状态
+                icon.css('transform', isExpanded ? 'rotate(90deg)' : 'rotate(0deg)');
             });
         });
-        // 高亮当前查看的文章
+
         highlightCurrentArticle();
 
         function highlightCurrentArticle() {
-            var currentArticleId = '{{ $article->id }}'; // 当前文章ID
+            var currentArticleId = '{{ $article->id }}';
             $('.article-title a').each(function() {
                 var href = $(this).attr('href');
-                var hrefArticleId = href.split('/').pop(); // 假设URL结构最后一部分是文章ID
+                var hrefArticleId = href.split('/').pop();
                 if (hrefArticleId === currentArticleId) {
-                    $(this).css('color', '#FF7F50'); // 设置当前文章链接的颜色
+                    $(this).css('color', '#FF7F50');
                 }
             });
         }
-    
-
     });
+
     $(function() {
         editormd.markdownToHTML("article-content", {
             htmlDecode: "style,script,iframe",
@@ -405,20 +476,15 @@
             path: '{{ asset('editormd/lib/') }}',
         });
 
-
-
         processImages();
         initLightbox();
         addCopyButtons();
 
         function processImages() {
-            console.log("Processing images...");
             $("#article-content img").each(function() {
                 var imageSrc = $(this).attr('src');
-                console.log("Image found with src:", imageSrc);
                 if (!$(this).parent().is("a")) {
                     $(this).wrap('<a href="' + imageSrc + '" data-lightbox="article-images"></a>');
-                    console.log("Wrapped image with a tag.");
                 }
             });
         }
@@ -447,7 +513,6 @@
                         setTimeout(() => { button.textContent = '复制'; }, 2000);
                     } catch (err) {
                         button.textContent = '复制失败';
-                        console.error('Error copying text: ', err);
                     }
                     document.body.removeChild(textArea);
                 });
@@ -460,25 +525,19 @@
                 }
                 pre.appendChild(button);
             });
-}
+        }
 
-
-
-
-        // 获取当前文章的索引
         function getCurrentArticleIndex() {
             var currentArticleId = {{ $article->id }};
             var articles = @json($articles);
 
-            if (articles instanceof Array) {
-                // 处理没有章节的情况
+            if (Array.isArray(articles)) {
                 for (var i = 0; i < articles.length; i++) {
                     if (articles[i].id == currentArticleId) {
                         return { chapterId: null, articleIndex: i };
                     }
                 }
             } else {
-                // 假设文章仍然按章节分组
                 for (var chapterId in articles) {
                     if (articles.hasOwnProperty(chapterId)) {
                         var chapterArticles = articles[chapterId];
@@ -493,12 +552,10 @@
             return null;
         }
 
-// 获取指定索引的文章URL
         function getArticleUrlByIndex(baseUrl, documentName, version, chapterId, articleIndex) {
             var articles = @json($articles);
 
             if (chapterId === null) {
-                // 处理没有章节的情况
                 if (articleIndex >= 0 && articleIndex < articles.length) {
                     var article = articles[articleIndex];
                     return `${baseUrl}/documents/${documentName}/${version}/articles/${article.slug}/${article.id}`;
@@ -535,11 +592,9 @@
             }
         }
 
-
         window.scrollToTop = function() {
             $("html, body").animate({ scrollTop: 0 }, 500);
         }
-
     });
 </script>
 </body>
