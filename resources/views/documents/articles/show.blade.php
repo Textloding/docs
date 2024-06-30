@@ -535,7 +535,7 @@
                 pre.appendChild(button);
             });
         }
-        
+
         function getCurrentArticleIndex() {
             var currentArticleId = {{ $article->id }};
             var articles = @json($articles);

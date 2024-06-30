@@ -119,46 +119,68 @@ class ArticleController extends AdminController
             $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'))->required()->options([
                 'onload' => JavaScript::make(
                     <<<JS
-function() {
+function () {
     var _this = this;
+    var uploadEndpoint = '/admin/upload-image';
+
+    // 处理粘贴事件
     document.addEventListener('paste', function(event) {
-        var clipboardData = event.clipboardData;
-        var items, item, types;
-
+        var clipboardData = event.clipboardData || window.clipboardData;
         if (clipboardData) {
-            items = clipboardData.items;
-            if (!items) {
-                return;
-            }
-            item = items[0];
-            types = clipboardData.types || [];
-
-            for (var i = 0; i < types.length; i++) {
-                if (types[i] === 'Files') {
-                    item = items[i];
-                    break;
-                }
-            }
-
-            if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
-                var file = item.getAsFile();
-                var formData = new FormData();
-                formData.append('image', file);
-
-                $.ajax({
-                    url: '/admin/upload-image',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        _this.insertValue("![](" + response.url + ")");
+            var items = clipboardData.items;
+            if (items) {
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    if (item.kind === 'file' && item.type.match(/^image\//i)) {
+                        var file = item.getAsFile();
+                        uploadFile(file);
+                        break;
                     }
-                });
+                }
             }
         }
     });
+
+    // 处理拖放事件
+    document.addEventListener('dragover', function(event) {
+        event.preventDefault();
+    });
+
+    document.addEventListener('drop', function(event) {
+        event.preventDefault();
+        var files = event.dataTransfer.files;
+        if (files.length) {
+            Array.from(files).forEach(file => {
+                if (file.type.match(/^image\//i)) {
+                    uploadFile(file);
+                }
+            });
+        }
+    });
+
+    // 上传文件的函数
+    function uploadFile(file) {
+        var formData = new FormData();
+        formData.append('image', file);
+
+        $.ajax({
+            url: uploadEndpoint,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                _this.insertValue("![](" + response.url + ")");
+            },
+            error: function(xhr, status, error) {
+                console.error("Upload failed:", error);
+                alert("上传失败: " + error);
+            }
+        });
+    }
 }
+
+
 JS
                 ),
             ]);

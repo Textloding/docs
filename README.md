@@ -103,7 +103,7 @@ php artisan export:documents-seed
 
 ## 待解决已知问题
 1.BUG问题
- -
+ -  Dcatadmin内置的Markdown编辑器会因为文档过长造成保存后无法再次编辑文章的问题
 2.体验优化问题
  - 
 3.逻辑问题
