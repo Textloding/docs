@@ -128,6 +128,30 @@
             opacity: 1;
             transition: opacity 0.5s;
         }
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-buttons button {
+            width: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #17a2b8;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #138496;
+        }
     </style>
 </head>
 <body>
@@ -180,9 +204,14 @@
             </div>
         @endif
     </div>
+    <div class="nav-buttons">
+        <button onclick="scrollToTop()">返回顶部</button>
+        <button onclick="location.href='{{ url('/') }}'">返回主页</button>
+    </div>
 
 </div>
 
+<script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const body = document.body;
@@ -205,7 +234,13 @@
 
         // 页面加载过渡动画
         body.classList.add('fade-in');
+
+
     });
+    window.scrollToTop = function() {
+        $("html, body").animate({ scrollTop: 0 }, 500);
+    }
+
 </script>
 </body>
 </html>
