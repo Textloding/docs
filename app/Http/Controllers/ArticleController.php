@@ -33,12 +33,17 @@ class ArticleController extends Controller
             ->where('version_id', $version->id)
             ->where('id', $article_id)
             ->firstOrFail();
+        $chapters = $document->has_chapters
+            ? Chapter::with(['articles' => function($query) use ($version) {
+                $query->where('version_id', $version->id)->orderBy('order');
+            }])->where('version_id', $version->id)->orderBy('order')->get()
+            : [];
 
         $articles = $document->has_chapters
             ? $version->articles()->with('chapter')->orderBy('chapter_id')->orderBy('order')->get()->groupBy('chapter_id')
             : $version->articles()->orderBy('order')->get();
 
-        return view('documents.articles.show', compact('document', 'version', 'article', 'articles'));
+        return view('documents.articles.show', compact('document', 'version', 'article', 'chapters', 'articles'));
     }
 
     public function findArticleIdBySlug($document_slug, $version_number, $chapter_id, $article_slug)

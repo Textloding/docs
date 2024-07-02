@@ -321,17 +321,17 @@
 <div class="sidebar">
     <h5>目录</h5>
     @if($document->has_chapters)
-        @foreach($articles as $chapterId => $chapterArticles)
+        @foreach($chapters as $chapter)
             <div class="chapter">
-                <div class="chapter-title" data-toggle="collapse" data-target="#chapter-{{ $chapterId }}">
+                <div class="chapter-title" data-toggle="collapse" data-target="#chapter-{{ $chapter->id }}">
                     <span class="toggle-icon">&#9656;</span>
-                    {{ $chapterArticles->first()->chapter->title ?? '未命名章节' }}
+                    {{ $chapter->title ?? '未命名章节' }}
                 </div>
-                <div class="collapse" id="chapter-{{ $chapterId }}">
-                    @if ($chapterArticles->isEmpty())
+                <div class="collapse" id="chapter-{{ $chapter->id }}">
+                    @if ($chapter->articles->isEmpty())
                         <div class="article-title">暂无文章</div>
                     @else
-                        @foreach($chapterArticles as $articleItem)
+                        @foreach($chapter->articles as $articleItem)
                             <div class="article-title">
                                 <a href="{{ route('articles.show', ['document_slug' => $document->slug, 'version' => $version->version_number, 'article_slug' => $articleItem->slug, 'article_id' => $articleItem->id]) }}">{{ $articleItem->title }}</a>
                             </div>
