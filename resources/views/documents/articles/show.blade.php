@@ -182,7 +182,7 @@
 
         .copy-btn {
             position: absolute;
-            top: 0px;
+            top: 6px;
             right: 5px;
             display: none;
             padding: 5px 10px;
@@ -381,6 +381,8 @@
     <button onclick="goToPreviousArticle()">上一文章</button>
     <button onclick="goToNextArticle()">下一文章</button>
     <button onclick="scrollToTop()">返回顶部</button>
+    <button onclick="location.href='{{ url('/') }}'">返回主页</button>
+    <button onclick="location.href='{{ url('/documents/' . $document->slug) }}'">返回文档展示页</button>
 </div>
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
