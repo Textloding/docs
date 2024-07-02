@@ -1,8 +1,8 @@
-<?php 
+<?php
 return [
     'labels' => [
-        'Chapter' => 'Chapter',
-        'chapter' => 'Chapter',
+        'Chapter' => '章节',
+        'chapter' => '章节',
     ],
     'fields' => [
         'document_id' => '文档ID',
