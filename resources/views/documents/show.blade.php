@@ -131,6 +131,7 @@
     </style>
 </head>
 <body>
+@include('includes.theme-switch') <!-- 引入主题开关 -->
 <div class="container">
     <div class="document-info">
         @if($document->cover_image_url)
