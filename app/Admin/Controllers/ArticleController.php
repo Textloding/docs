@@ -115,7 +115,7 @@ class ArticleController extends AdminController
 
             $form->hidden('id');
             $form->text('slug','跳转链接')->required();
-            $form->text('title');
+            $form->text('title')->required();
             $form->markdown('content')->languageUrl(admin_asset('@admin/dcat/plugins/editor-md/languages/zh-tw.js'))->required()->options([
                 'onload' => JavaScript::make(
                     <<<JS
@@ -202,7 +202,14 @@ JS
                 // 手动编号
                 $form->number('order', '排序')->required();
             }
+            // 去掉`查看`checkbox
+            $form->disableViewCheck();
 
+            // 去掉`继续编辑`checkbox
+            $form->disableEditingCheck();
+
+            // 去掉`继续创建`checkbox
+            $form->disableCreatingCheck();
             $form->display('created_at');
             $form->display('updated_at');
             $form->disableListButton();

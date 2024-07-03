@@ -93,6 +93,14 @@ class VersionController extends AdminController
                     return $v ? 1 : 0;
                 });
 
+            // 去掉`查看`checkbox
+            $form->disableViewCheck();
+
+            // 去掉`继续编辑`checkbox
+            $form->disableEditingCheck();
+
+            // 去掉`继续创建`checkbox
+            $form->disableCreatingCheck();
             $form->display('created_at');
             $form->display('updated_at');
             $form->disableListButton();
