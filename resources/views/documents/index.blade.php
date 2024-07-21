@@ -109,8 +109,21 @@
             display: none;
             z-index: 1000;
         }
+        /*//避免标题过长影响显示*/
+        .document-card-body h8 {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
     </style>
+    <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </head>
+
 <body>
 @include('includes.theme-switch') <!-- 引入主题开关 -->
 <div class="container">
@@ -138,7 +151,7 @@
                 </a>
                 <div class="divider"></div>
                 <div class="document-card-body">
-                    <h8>{{ $document->name }}</h8>
+                    <h8 data-toggle="tooltip" title="{{ $document->name }}">{{ $document->name }}</h8>
                     <div class="divider-light"></div>
                     @if($document->versions->isNotEmpty())
                         <p><strong>最新版本:</strong> {{ $latestVersion->version_number }}</p>
@@ -161,6 +174,10 @@
 </button>
 
 <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
     document.addEventListener("DOMContentLoaded", function() {
 
         // 隐秘按钮的触发键盘组合
